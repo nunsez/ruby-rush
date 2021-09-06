@@ -1,0 +1,4 @@
+* text=auto
+
+*.rb text working-tree-encoding=utf-8 eol=lf
+*.txt text text working-tree-encoding=utf-8
