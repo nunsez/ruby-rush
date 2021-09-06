@@ -1,3 +1,5 @@
+# rubocop:disable Style/GlobalVars
+
 $a = 'global'
 b = 'local'
 
@@ -18,4 +20,4 @@ puts "Переменная '$a': #{defined?($a)}"
 puts "Переменная 'b': #{defined?(b)}"
 puts "Переменная 'c': #{defined?(c)}"
 
-
+# rubocop:enable Style/GlobalVars
