@@ -19,8 +19,11 @@ class Post
 
         class_name = self.class.name
         file_mame = @created_at.strftime("#{class_name}_%Y-%m-%d_%H-%M-%S.txt")
+        posts_path = File.join(current_path, '..', 'posts')
 
-        File.join(current_path, '..', 'posts', file_mame)
+        Dir.mkdir(posts_path) unless File.exist?(posts_path)
+
+        File.join(posts_path, file_mame)
     end
 
     def read_from_console
