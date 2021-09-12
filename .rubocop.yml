@@ -32,3 +32,6 @@ Layout/IndentationWidth:
 
 Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
+
+Layout/LineEndStringConcatenationIndentation:
+  EnforcedStyle: indented
