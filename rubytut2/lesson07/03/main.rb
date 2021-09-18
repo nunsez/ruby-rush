@@ -2,13 +2,20 @@ require_relative 'lib/product'
 require_relative 'lib/book'
 require_relative 'lib/film'
 
-product = Film.new(title: 'Леон', year: 1994)
+current_path = File.dirname(__FILE__)
 
-puts product
-puts
+film_path = File.join(current_path, 'data', 'films', '01.txt')
+film = Film.from_file(film_path)
 
-product.amount = 10
-product.update(price: 1000, director: 'Luc Besson', lol: 'kek')
+book_path = File.join(current_path, 'data', 'books', '01.txt')
+book = Book.from_file(book_path)
 
-puts 'Product update!'
-puts product
+puts film
+puts book
+
+begin
+    Product.from_file(film_path)
+rescue NotImplementedError => e
+    puts
+    puts e.message
+end
