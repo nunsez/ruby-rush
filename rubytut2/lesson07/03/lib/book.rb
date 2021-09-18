@@ -3,19 +3,17 @@ class Book < Product
 
     class << self
         def from_file(file_path)
-            begin
-                content = File.readlines(file_path, encoding: 'utf-8', chomp: true)
+            lines = File.readlines(file_path, encoding: 'utf-8', chomp: true, autoclose: true)
 
-                new(
-                    title: content[0],
-                    genre: content[1],
-                    author: content[2],
-                    price: content[3].to_i,
-                    amount: content[4].to_i
-                )
-            rescue SystemCallError
-                puts 'Book data not found!'
-            end
+            new(
+                title: lines[0],
+                genre: lines[1],
+                author: lines[2],
+                price: lines[3].to_i,
+                amount: lines[4].to_i
+            )
+        rescue SystemCallError
+            puts 'Book data not found!'
         end
     end
 

@@ -3,19 +3,17 @@ class Film < Product
 
     class << self
         def from_file(file_path)
-            begin
-                content = File.readlines(file_path, encoding: 'utf-8', chomp: true)
+            lines = File.readlines(file_path, encoding: 'utf-8', chomp: true, autoclose: true)
 
-                new(
-                    title: content[0],
-                    director: content[1],
-                    year: content[2].to_i,
-                    price: content[3].to_i,
-                    amount: content[4].to_i
-                )
-            rescue SystemCallError
-                puts 'Film data not found!'
-            end
+            new(
+                title: lines[0],
+                director: lines[1],
+                year: lines[2].to_i,
+                price: lines[3].to_i,
+                amount: lines[4].to_i
+            )
+        rescue SystemCallError
+            puts 'Film data not found!'
         end
     end
 

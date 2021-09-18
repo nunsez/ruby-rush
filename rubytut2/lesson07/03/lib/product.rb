@@ -3,7 +3,7 @@ class Product
 
     class << self
         def from_file(_)
-            raise NotImplementedError, 'Метод класса Product.from_file не реализован'
+            raise NotImplementedError, "Метод класса #{name}.#{__callee__} не реализован"
         end
     end
 
