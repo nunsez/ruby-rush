@@ -2,7 +2,7 @@ class ProductCollection
     PRODUCT_TYPES = {
         book: { dir: 'books', class: Book },
         film: { dir: 'films', class: Film }
-    }
+    }.freeze
 
     class << self
         def from_dir(dir_path)
@@ -31,16 +31,12 @@ class ProductCollection
     end
 
     def sort(params)
-        case params[:by]
-        when :price
-            sort_proc = proc { |i| i.price }
-        when :amount
-            sort_proc = proc { |i| i.amount }
-        when :title
-            sort_proc = proc { |i| i.title }
-        else
-            sort_proc = proc { |i| i }
-        end
+        sort_proc = case params[:by]
+                    when :price then    proc { |i| i.price }
+                    when :amount then   proc { |i| i.amount }
+                    when :title then    proc { |i| i.title }
+                    else                proc { |i| i }
+                    end
 
         sorted_products = @products.sort_by(&sort_proc)
         sorted_products.reverse! if params[:order] == :desc
