@@ -5,7 +5,7 @@ def show_rolling_die(range)
     end
 end
 
-RANGE = (1..6).freeze
+RANGE = (1..6)
 
 puts 'How many dice?'
 number = gets.to_i
