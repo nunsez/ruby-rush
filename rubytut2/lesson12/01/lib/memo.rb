@@ -1,0 +1,2 @@
+class Memo < Post
+end
