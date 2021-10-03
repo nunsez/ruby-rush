@@ -29,13 +29,7 @@ OptionParser.new do |opt|
     ) { |o| options[:limit] = o }
 end.parse!
 
-result = nil
-
-if options[:id]
-    result = Post.find_by_id(options[:id])
-else
-    result = Post.find_all(options)
-end
+result = options[:id] ? Post.find_by_id(options[:id]) : Post.find_all(options)
 
 if result.nil?
     puts "Такой id: #{options[:id]} не найден в базе."
@@ -50,7 +44,14 @@ end
 
 ljst = proc { |s, n| "#{s.to_s[0...n].gsub("\n", "\s").ljust(n)} | " }
 
-puts "#{ljst['ID', 5]}#{ljst['Type', 5]}#{ljst['Content', 30]}#{ljst['URL', 17]}#{ljst['Due Date', 14]}#{ljst['Created at', 14]}#{ljst['Updated at', 14]}"
+print ljst['ID', 5]
+print ljst['Type', 5]
+print ljst['Content', 30]
+print ljst['URL', 17]
+print ljst['Due Date', 14]
+print ljst['Created at', 14]
+print ljst['Updated at', 14]
+print "\n"
 
 result.each do |row|
     row.each do |k, v|
