@@ -8,9 +8,20 @@ class Task < Post
         @due_date = hash[:due_date]
     end
 
-    def to_sstrings
+    def to_strings
         lines = []
         lines << "Дата истечения: #{@due_date}"
         lines << super
+    end
+
+    def read_from_console
+        puts 'Что вам необходимо сделать?'
+        @content << $stdin.gets.encode('utf-8').chomp
+
+        puts 'До какого числа вам нужно это сделать?'
+        puts 'Укажите дату в формате ДД.ММ.ГГГГ, например 12.05.2003'
+        input = $stdin.gets.chomp
+
+        @due_date = Date.parse(input)
     end
 end

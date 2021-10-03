@@ -27,7 +27,7 @@ class Post
                 query +=    "LIMIT #{params[:limit]} " if params[:limit]
 
                 result = conn.exec(query)
-                return result.first
+                return result.first # FIXME maybe should refactor
             end
 
             result = conn.exec("SELECT * FROM posts WHERE id = #{params[:id]}")
@@ -35,7 +35,7 @@ class Post
             if result.any?
                 result = result.first
                 post = create(result[:type])
-                post.load_data(result)
+                post.load_data(result) # FIXME should delete or refactor?
                 return post
             end
 
@@ -45,6 +45,7 @@ class Post
 
         def date_fmt(date)
             return '' if date.nil?
+
             date.strftime('%d.%m.%y %H:%M')
         end
     end
@@ -69,8 +70,8 @@ class Post
         {
             type: self.class.name,
             content: @content.join("\n"),
-            created_at: @created_at.to_s,
-            updated_at: @updated_at.to_s
+            created_at: @created_at,
+            updated_at: @updated_at
         }
     end
 
@@ -78,6 +79,7 @@ class Post
         conn = self.class.conn_init
         hash = to_db_hash
         params = []
+
         1.upto(hash.size) { |i| params << "$#{i}" }
 
         res = conn.exec(
@@ -90,22 +92,22 @@ class Post
         res.first[:id]
     end
 
-    def load_data(hash)
+    def load_data(hash) # FIXME should delete or refactor?
         @content = hash[:content].split('\n')
         @created_at = hash[:created_at]
         @updated_at = hash[:updated_at]
     end
 
-    def save
-        File.open(file_path, 'w:utf-8') do |file|
-            to_strings.each { |item| file.puts item }
-        end
-    end
+    # def save
+    #     File.open(file_path, 'w:utf-8') do |file|
+    #         to_strings.each { |item| file.puts item }
+    #     end
+    # end
 
-    def file_path
-        type = self.class.name
-        file_name = @created_at.strftime("#{type}_%Y-%m-%d_%H-%M-%S.txt")
-        relative_path = File.join('..', 'data', file_name)
-        File.expand_path(relative_path, __dir__)
-    end
+    # def file_path
+    #     type = self.class.name
+    #     file_name = @created_at.strftime("#{type}_%Y-%m-%d_%H-%M-%S.txt")
+    #     relative_path = File.join('..', 'data', file_name)
+    #     File.expand_path(relative_path, __dir__)
+    # end
 end

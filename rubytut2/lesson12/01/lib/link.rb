@@ -13,4 +13,12 @@ class Link < Post
         lines << "Ссылка: #{@url}"
         lines << super
     end
+
+    def read_from_console
+        puts 'Введите адрес ссылки'
+        @url = $stdin.gets.chomp
+
+        puts 'Напишите пару слов о том, куда ведёт ссылка'
+        @content << $stdin.gets.chomp
+    end
 end
