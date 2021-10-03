@@ -25,7 +25,6 @@ begin
 rescue SocketError => e
     puts 'Извините, ошибка соединения с сервером погоды.'
     abort e.message
-    exit
 end
 
 abort "Извините, ошибка соединения с сервером погоды: #{res.code}." unless res.code == '200'
