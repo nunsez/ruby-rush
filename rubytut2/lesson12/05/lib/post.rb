@@ -29,9 +29,7 @@ class Post
             post.load_data(result)
             post
         rescue PG::Error => e
-            puts 'Не удалось выполнить запрос в базе.'
-            puts e.message
-            exit
+            abort "Не удалось выполнить запрос в базе.\n#{e.message}"
         end
 
         def find_all(params)
@@ -44,9 +42,7 @@ class Post
 
             conn.exec(query) # return result
         rescue PG::Error => e
-            puts 'Не удалось выполнить запрос в базе.'
-            puts e.message
-            exit
+            abort "Не удалось выполнить запрос в базе.\n#{e.message}"
         end
 
         def date_fmt(date)
@@ -83,23 +79,19 @@ class Post
 
     def save_to_db
         conn = self.class.conn_init
-        hash = to_db_hash
-        params = []
+        params = to_db_hash.map.with_index(1) { "$#{_2}" }.join(', ')
+        keys = to_db_hash.keys.join(', ')
 
-        1.upto(hash.size) { |i| params << "$#{i}" }
-
-        res = conn.exec(
-            "INSERT INTO posts (#{hash.keys.join(', ')})
-             VALUES (#{params.join(', ')})
+        result = conn.exec(
+            "INSERT INTO posts (#{keys})
+             VALUES (#{params})
              RETURNING id",
-            hash.values
+            to_db_hash.values
         )
 
-        res.first[:id]
+        result.first[:id]
     rescue PG::Error => e
-        puts 'Не удалось выполнить запрос в базе.'
-        puts e.message
-        exit
+        abort "Не удалось выполнить запрос в базе.\n#{e.message}"
     end
 
     def load_data(hash)
