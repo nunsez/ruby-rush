@@ -22,12 +22,12 @@ class Post
 
             if params[:id].nil?
                 query =     'SELECT * FROM posts '
-                query +=    "WHERE type = '#{params[:type]}' " if params[:type]
-                query +=    'ORDER BY id DESC '
-                query +=    "LIMIT #{params[:limit]} " if params[:limit]
+                query <<    "WHERE type = '#{params[:type]}' " if params[:type]
+                query <<    'ORDER BY id DESC '
+                query <<    "LIMIT #{params[:limit]} " if params[:limit]
 
                 result = conn.exec(query)
-                return result.first # FIXME maybe should refactor
+                return result
             end
 
             result = conn.exec("SELECT * FROM posts WHERE id = #{params[:id]}")
@@ -35,12 +35,11 @@ class Post
             if result.any?
                 result = result.first
                 post = create(result[:type])
-                post.load_data(result) # FIXME should delete or refactor?
+                post.load_data(result)
                 return post
             end
 
-            puts "Такой id: #{params[:id]} не найден в базе."
-            []
+            nil
         end
 
         def date_fmt(date)
@@ -85,29 +84,16 @@ class Post
         res = conn.exec(
             "INSERT INTO posts (#{hash.keys.join(', ')})
              VALUES (#{params.join(', ')})
-             RETURNING *;",
+             RETURNING id;",
             hash.values
         )
 
         res.first[:id]
     end
 
-    def load_data(hash) # FIXME should delete or refactor?
+    def load_data(hash)
         @content = hash[:content].split('\n')
         @created_at = hash[:created_at]
         @updated_at = hash[:updated_at]
     end
-
-    # def save
-    #     File.open(file_path, 'w:utf-8') do |file|
-    #         to_strings.each { |item| file.puts item }
-    #     end
-    # end
-
-    # def file_path
-    #     type = self.class.name
-    #     file_name = @created_at.strftime("#{type}_%Y-%m-%d_%H-%M-%S.txt")
-    #     relative_path = File.join('..', 'data', file_name)
-    #     File.expand_path(relative_path, __dir__)
-    # end
 end

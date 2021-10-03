@@ -31,21 +31,27 @@ end.parse!
 
 result = Post.find(options)
 
+if result.nil?
+    puts "Такой id: #{options[:id]} не найден в базе."
+    exit
+end
+
 if result.is_a? Post
     puts "Запись #{result.class.name}, id = #{options[:id]}"
     puts result.to_strings.join("\n")
     exit
 end
 
-ljst = proc { |s, n| "#{s.to_s.ljust(n)}| " }
+ljst = proc { |s, n| "#{s.to_s[0...n].gsub("\n", "\s").ljust(n)} | " }
 
-puts "#{ljst['ID', 5]}#{ljst['Type', 5]}#{ljst['Content', 30]}#{ljst['URL', 15]}#{ljst['Due Date', 15]}#{ljst['Created at', 15]}#{ljst['Updated at', 15]}"
+puts "#{ljst['ID', 5]}#{ljst['Type', 5]}#{ljst['Content', 30]}#{ljst['URL', 17]}#{ljst['Due Date', 14]}#{ljst['Created at', 14]}#{ljst['Updated at', 14]}"
+
 result.each do |row|
     row.each do |k, v|
         s = case k
             when :content then ljst[v, 30]
-            when :due_date, :updated_at, :created_at then ljst[Post.date_fmt(v), 15]
-            when :url then ljst[v, 15]
+            when :due_date, :updated_at, :created_at then ljst[Post.date_fmt(v), 14]
+            when :url then ljst[v, 17]
             else ljst[v, 5]
             end
         print s
