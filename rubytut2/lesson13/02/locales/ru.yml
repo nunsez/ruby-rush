@@ -1,0 +1,37 @@
+---
+day_part:
+  night:    ночь
+  morning:  утро
+  day:      день
+  evening:  вечер
+weather:
+  wind_dir:
+    nw: СЗ
+    n:  С
+    ne: СВ
+    e:  В
+    se: ЮВ
+    s:  Ю
+    sw: ЮЗ
+    w:  З
+    c:  Ш
+  condition:
+    clear:                  Ясно
+    partly-cloudy:          Малооблачно
+    cloudy:                 Облачно с прояснениями
+    overcast:               Пасмурно
+    drizzle:                Морось
+    light-rain:             Небольшой дождь
+    rain:                   Дождь
+    moderate-rain:          Умеренно сильный дождь
+    heavy-rain:             Сильный дождь
+    continuous-heavy-rain:  Длительный сильный дождь
+    showers:                Ливень
+    wet-snow:               Дождь со снегом
+    light-snow:             Небольшой снег
+    snow:                   Снег
+    snow-showers:           Снегопад
+    hail:                   Град
+    thunderstorm:           Гроза
+    thunderstorm-with-rain: Дождь с грозой
+    thunderstorm-with-hail: Гроза с градом
